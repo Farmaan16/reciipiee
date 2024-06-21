@@ -8,7 +8,7 @@ function RecipeCard({ id, title, image }: Recipe) {
       className="relative w-full h-full hover:scale-105 transition-all duration-400 ease-in-out"
       key={id}
     >
-      <div className="bg-black/40 w-full h-full absolute rounded-[2rem] z-10"></div>
+      <div className=" w-full h-full absolute rounded-[2rem] z-10"></div>
       <p className="absolute z-20 text-white bottom-8 left-0 right-0 text-lg text-center">
         {title}
       </p>
@@ -23,3 +23,4 @@ function RecipeCard({ id, title, image }: Recipe) {
 }
 
 export default RecipeCard;
+  

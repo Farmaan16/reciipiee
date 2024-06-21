@@ -21,10 +21,11 @@ function Searched() {
     setLoading(true);
 
     try {
+      
       const res = await fetch(
         `https://api.spoonacular.com/recipes/complexSearch?apiKey=${
-          import.meta.env.SPOONACULAR_API_KEY
-        }&query=${query}`
+          import.meta.env.VITE_API_KEY
+        }&query=${encodeURIComponent(query)}`
       );
 
       const data = await res.json();

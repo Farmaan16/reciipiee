@@ -5,28 +5,28 @@ import Spinner from "./Spinner";
 import Carousel from "./Carousel";
 import { Recipe } from "../types/recipe";
 
-function Popular() {
-  const [popularRecipes, setPopularRecipes] = useState<Recipe[]>([]);
+function Vegetarian() {
+  const [veggieRecipes, setVeggieRecipes] = useState<Recipe[]>([]);
   const [loading, setLoading] = useState(true);
 
-  const getPopularRecipes = useCallback(async () => {
+  const getVeggieRecipes = useCallback(async () => {
     setLoading(true);
 
     try {
-      const storedRecipes = localStorage.getItem("popular");
+      const storedVeggieRecipes = localStorage.getItem("vegetarian");
 
-      if (storedRecipes) {
-        setPopularRecipes(JSON.parse(storedRecipes));
+      if (storedVeggieRecipes) {
+        setVeggieRecipes(JSON.parse(storedVeggieRecipes));
       } else {
         const res = await fetch(
           `https://api.spoonacular.com/recipes/random?apiKey=${
             import.meta.env.VITE_API_KEY
-          }&number=6`
+          }&number=6&tags=vegan`
         );
 
         const data = await res.json();
-        setPopularRecipes(data.recipes);
-        localStorage.setItem("popular", JSON.stringify(data.recipes));
+        setVeggieRecipes(data.recipes);
+        localStorage.setItem("vegetarian", JSON.stringify(data.recipes));
       }
     } catch (error) {
       toast.error("Failed to fetch recipes, try again later!", {
@@ -41,17 +41,17 @@ function Popular() {
   }, []);
 
   useEffect(() => {
-    getPopularRecipes();
-  }, [getPopularRecipes]);
+    getVeggieRecipes();
+  }, [getVeggieRecipes]);
 
   return (
     <div className="my-6 mx-2">
-      <h2 className="text-3xl font-semibold">Popular Recipes</h2>
-      <small className="text-xs text-gray-700">Swipe to see more</small>
+      <h2 className="text-3xl font-semibold">Vegetarian Picks</h2>
+      <small className="text-xs text-gray-500">Swipe to see more</small>
 
-      {loading ? <Spinner /> : <Carousel recipes={popularRecipes} />}
+      {loading ? <Spinner /> : <Carousel recipes={veggieRecipes} />}
     </div>
   );
 }
 
-export default Popular;
+export default Vegetarian;
