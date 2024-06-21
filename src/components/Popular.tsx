@@ -20,7 +20,7 @@ function Popular() {
       } else {
         const res = await fetch(
           `https://api.spoonacular.com/recipes/random?apiKey=${
-            import.meta.env.VITE_API_KEY
+            import.meta.env.SPOONACULAR_API_KEY
           }&number=6`
         );
 
