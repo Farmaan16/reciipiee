@@ -1,11 +1,61 @@
-import { Ingredient } from "./ingredient";
+// types/recipe.ts
 
-export type Recipe = {
-  id: string;
-  title: string;
+export interface Recipe {
+  vegetarian: boolean;
+  vegan: boolean;
+  glutenFree: boolean;
+  dairyFree: boolean;
+  veryHealthy: boolean;
+  cheap: boolean;
+  aggregateLikes: number;
+  analyzedInstructions: { name: string }[];
+  cookingMinutes: number | null;
+  creditsText: string;
+  cuisines: string[];
+  diets: string[];
+  dishTypes: string[];
+  extendedIngredients: ExtendedIngredient[];
+  gaps: string;
+  healthScore: number;
+  id: number;
   image: string;
-
+  imageType: string;
+  instructions: string;
+  lowFodmap: boolean;
+  occasions: string[];
+  originalId: number | null;
+  preparationMinutes: number | null;
+  pricePerServing: number;
   readyInMinutes: number;
-  instructions?: string;
-  extendedIngredients?: Ingredient[];
-};
+  servings: number;
+  sourceName: string;
+  sourceUrl: string;
+  spoonacularScore: number;
+  spoonacularSourceUrl: string;
+  summary: string;
+  sustainable: boolean;
+  title: string;
+  veryPopular: boolean;
+  weightWatcherSmartPoints: number;
+  calories: number;
+  protein: number;
+  fat: number;
+  carbs: number;
+}
+
+interface ExtendedIngredient {
+  id: number;
+  aisle: string;
+  image: string;
+  consistency: string;
+  name: string;
+  original: string;
+  originalName: string;
+  unit: string;
+}
+
+// types/routeParams.ts
+
+export interface RouteParams {
+  id: string;
+}
