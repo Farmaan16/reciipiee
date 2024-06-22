@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 import { toast } from "react-toastify";
 import { Recipe } from "../types/recipe";
 import Spinner from "../components/Spinner";
-import RecipeCard from "../components/RecipeCard";
+import AllRecipesCard from "../components/AllRecipesCard";
+import { BiArrowBack } from "react-icons/bi";
 
 function Searched() {
   const params = useParams();
@@ -54,16 +55,25 @@ function Searched() {
     <div className="max-w-7xl mx-auto my-6 space-y-4">
       {searchedRecipes.length > 0 ? (
         <>
-          <h2 className="text-3xl font-bold px-6 capitalize">
-            {params.query} Recipes
-          </h2>
+          <div className="flex justify-between">
+            <h2 className="text-xl font-bold px-6 capitalize">
+              {params.query} Recipes
+            </h2>
+            <Link
+              to="/"
+              className=" text-xl mr-7 font-semibold flex items-center hover:underline"
+            >
+              <BiArrowBack className="text-lg mr-2" /> Back
+            </Link>
+          </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 px-2">
             {searchedRecipes.map((recipe) => {
               return (
-                <RecipeCard
+                <AllRecipesCard
                   key={recipe.id}
                   id={recipe.id}
                   title={recipe.title}
+                  readyInMinutes={60}
                   image={recipe.image}
                 />
               );

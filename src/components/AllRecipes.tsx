@@ -6,27 +6,27 @@ import { Recipe } from "../types/recipe";
 import AllRecipesCard from "./AllRecipesCard";
 
 function AllRecipes() {
-  const [veggieRecipes, setVeggieRecipes] = useState<Recipe[]>([]);
+  const [allRecipes, setAllRecipes] = useState<Recipe[]>([]);
   const [loading, setLoading] = useState(true);
 
-  const getVeggieRecipes = useCallback(async () => {
+  const getAllRecipes = useCallback(async () => {
     setLoading(true);
 
     try {
-      const storedVeggieRecipes = localStorage.getItem("vegetarian");
+      const storedAllRecipes = localStorage.getItem("All Recipes");
 
-      if (storedVeggieRecipes) {
-        setVeggieRecipes(JSON.parse(storedVeggieRecipes));
+      if (storedAllRecipes) {
+        setAllRecipes(JSON.parse(storedAllRecipes));
       } else {
         const res = await fetch(
           `https://api.spoonacular.com/recipes/random?apiKey=${
             import.meta.env.VITE_API_KEY
-          }&number=8&tags=vegan`
+          }&number=9`
         );
 
         const data = await res.json();
-        setVeggieRecipes(data.recipes);
-        localStorage.setItem("vegetarian", JSON.stringify(data.recipes));
+        setAllRecipes(data.recipes);
+        localStorage.setItem("All Recipes", JSON.stringify(data.recipes));
       }
     } catch (error) {
       toast.error("Failed to fetch recipes, try again later!", {
@@ -41,8 +41,8 @@ function AllRecipes() {
   }, []);
 
   useEffect(() => {
-    getVeggieRecipes();
-  }, [getVeggieRecipes]);
+    getAllRecipes();
+  }, [getAllRecipes]);
 
   return (
     <div className="my-6 mx-2">
@@ -55,7 +55,7 @@ function AllRecipes() {
         <Spinner />
       ) : (
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-          {veggieRecipes.map((recipe) => (
+          {allRecipes.map((recipe) => (
             <AllRecipesCard
               key={recipe.id}
               id={recipe.id}
