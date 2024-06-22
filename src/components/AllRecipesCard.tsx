@@ -5,7 +5,7 @@ function AllRecipesCard({ id, title, image, readyInMinutes }: Recipe) {
   return (
     <Link
       to={"/recipe/" + id}
-      className="flex w-full h-full rounded-2xl overflow-hidden "
+      className="flex w-full h-full rounded-2xl overflow-hidden  "
       style={{ textDecoration: "none" }}
     >
       <div className="w-1/3">

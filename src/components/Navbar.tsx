@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { GiKnifeFork } from "react-icons/gi";
 import { MdSearch, MdClose } from "react-icons/md";
+import { BsHeart } from "react-icons/bs";
 
 function Navbar() {
   const [input, setInput] = useState("");
@@ -50,6 +51,12 @@ function Navbar() {
             />
           )}
         </form>
+        <Link
+          to="/favorites"
+          className=" text-black text-xl  items-center gap-2 hover:text-red-500 font-semibold hidden md:flex "
+        >
+          <BsHeart className="text-xl font-bold" /> Favorites
+        </Link>
       </div>
     </nav>
   );

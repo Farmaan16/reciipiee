@@ -17,7 +17,7 @@ const BottomNavbar = () => {
       <Link
         to="/"
         className={`text-lg font-semibold flex items-center space-x-2 ${
-          activeLink === "/" ? "text-blue-500" : ""
+          activeLink === "/" ? "text-red-500" : ""
         }`}
         onClick={() => setActiveLink("/")}
       >
@@ -27,7 +27,7 @@ const BottomNavbar = () => {
       <Link
         to="/favorites"
         className={`text-lg font-semibold flex items-center space-x-2 ${
-          activeLink === "/favorites" ? "text-blue-500" : ""
+          activeLink === "/favorites" ? "text-red-500" : ""
         }`}
         onClick={() => setActiveLink("/favorites")}
       >
