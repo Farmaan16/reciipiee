@@ -9,7 +9,7 @@ function App() {
     <BrowserRouter>
       <div className="bg-white w-full min-h-screen flex flex-col">
         <Navbar />
-        
+
         <Pages />
       </div>
       <ToastContainer />

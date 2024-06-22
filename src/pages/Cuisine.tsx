@@ -64,6 +64,7 @@ function Cuisine() {
                 id={cuisine.id}
                 title={cuisine.title}
                 image={cuisine.image}
+                readyInMinutes={cuisine.readyInMinutes}
               />
             );
           })}

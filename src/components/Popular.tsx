@@ -46,8 +46,8 @@ function Popular() {
 
   return (
     <div className="my-6 mx-2">
-      <h2 className="text-3xl font-semibold">Popular Recipes</h2>
-      <small className="text-xs text-gray-700">Swipe to see more</small>
+      <h2 className="text-xl font-semibold">Popular Recipes</h2>
+      <small className="text-xs text-gray-700 font-semibold">Swipe to see more</small>
 
       {loading ? <Spinner /> : <Carousel recipes={popularRecipes} />}
     </div>

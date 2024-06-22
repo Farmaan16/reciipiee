@@ -12,6 +12,7 @@ interface CarouselProps {
 }
 
 const Carousel: FC<CarouselProps> = ({ recipes }) => {
+  
   return (
     <Splide
       options={{
@@ -19,7 +20,7 @@ const Carousel: FC<CarouselProps> = ({ recipes }) => {
         type: "loop",
         autoplay: true,
         interval: 3000,
-        perPage: 3,
+        perPage: 6,
         drag: "true",
         gap: "2rem",
         pagination: false,
@@ -29,10 +30,10 @@ const Carousel: FC<CarouselProps> = ({ recipes }) => {
         resetProgess: false,
         breakpoints: {
           600: {
-            perPage: 1,
+            perPage: 3,
           },
           1024: {
-            perPage: 2,
+            perPage: 3,
           },
         },
       }}
@@ -45,6 +46,7 @@ const Carousel: FC<CarouselProps> = ({ recipes }) => {
               id={recipe.id}
               title={recipe.title}
               image={recipe.image}
+              readyInMinutes={recipe.readyInMinutes}
             />
           </SplideSlide>
         );

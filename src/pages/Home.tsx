@@ -1,8 +1,7 @@
 import { motion } from "framer-motion";
 
-import Dessert from "../components/Dessert";
 import Popular from "../components/Popular";
-import Vegetarian from "../components/Vegetarian";
+import AllRecipes from "../components/AllRecipes";
 
 function Home() {
   return (
@@ -14,8 +13,8 @@ function Home() {
     >
       <div className="max-w-7xl mx-auto">
         <Popular />
-        <Vegetarian />
-        <Dessert />
+        <AllRecipes />
+        
       </div>
     </motion.div>
   );

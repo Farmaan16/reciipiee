@@ -6,6 +6,8 @@ import Searched from "./Searched";
 import RecipePage from "./RecipePage";
 
 import { AnimatePresence } from "framer-motion";
+import Favorites from "../components/Favorites";
+import BottomNavbar from "../components/BottomNavbar";
 
 function Pages() {
   const location = useLocation();
@@ -16,7 +18,9 @@ function Pages() {
         <Route path="/cuisine/:name" element={<Cuisine />} />
         <Route path="/recipe/:id" element={<RecipePage />} />
         <Route path="/search/:query" element={<Searched />} />
+        <Route path="/favorites" element={<Favorites />} />
       </Routes>
+      <BottomNavbar />
     </AnimatePresence>
   );
 }
