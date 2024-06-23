@@ -1,23 +1,33 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Recipe } from "../types/recipe";
 
 const Favorites = () => {
   const [favorites, setFavorites] = useState<Recipe[]>([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const storedFavorites = JSON.parse(localStorage.getItem("favorites") || "[]");
     setFavorites(storedFavorites);
   }, []);
 
+  const handleRecipeClick = (id: number) => {
+    navigate(`/recipe/${id}`);
+  };
+
   return (
     <div className="w-full mx-auto my-6 px-4">
-      <h2 className="text-xl font-bold text-zinc-600 mb-4 text-center">Favorites</h2>
+      <h2 className="text-3xl font-bold text-zinc-600 mb-4 text-center">Favorites</h2>
       {favorites.length === 0 ? (
         <p className="text-center text-gray-600">No favorite recipes yet.</p>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {favorites.map((recipe) => (
-            <div key={recipe.id} className="border rounded-lg p-4">
+            <div
+              key={recipe.id}
+              className="border rounded-lg p-4 cursor-pointer"
+              onClick={() => handleRecipeClick(recipe.id)}
+            >
               <h3 className="text-lg font-semibold mb-2">{recipe.title}</h3>
               <img
                 src={recipe.image}
