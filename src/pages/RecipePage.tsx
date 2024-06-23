@@ -8,6 +8,8 @@ import {
   MdExpandMore,
   MdExpandLess,
   MdPercent,
+  MdFavoriteBorder,
+  MdFavorite,
 } from "react-icons/md";
 import Spinner from "../components/Spinner";
 import { RouteParams } from "../types/routeParams";
@@ -19,6 +21,8 @@ function RecipePage() {
   const [recipe, setRecipe] = useState<Recipe | null>(null);
   const [loading, setLoading] = useState(true);
   const [expandedSections, setExpandedSections] = useState<string[]>([]);
+  const [isFavorite, setIsFavorite] = useState(false);
+  
 
   useEffect(() => {
     const getRecipeInfo = async () => {
@@ -59,6 +63,36 @@ function RecipePage() {
     getRecipeInfo();
   }, [params.id]);
 
+  useEffect(() => {
+    if (recipe) {
+      const favorites = JSON.parse(localStorage.getItem("favorites") || "[]");
+      const isFav = favorites.some((fav: Recipe) => fav.id === recipe.id);
+      setIsFavorite(isFav);
+    }
+  }, [recipe]);
+
+  const toggleFavorite = () => {
+    if (recipe) {
+      const favorites = JSON.parse(localStorage.getItem("favorites") || "[]");
+      let updatedFavorites;
+
+      if (isFavorite) {
+        updatedFavorites = favorites.filter((fav: Recipe) => fav.id !== recipe.id);
+        setIsFavorite(false);
+      } else {
+        updatedFavorites = [...favorites, recipe];
+        setIsFavorite(true);
+      }
+
+      localStorage.setItem("favorites", JSON.stringify(updatedFavorites));
+      toast.success(isFavorite ? "Removed from favorites" : "Added to favorites", {
+        position: "top-right",
+        autoClose: 3000,
+        closeOnClick: true,
+        hideProgressBar: true,
+      });
+    }
+  };
   const toggleSection = (sectionName: string) => {
     if (expandedSections.includes(sectionName)) {
       setExpandedSections(
@@ -77,9 +111,20 @@ function RecipePage() {
     <div className="w-full mx-auto my-6 px-4">
       {recipe && (
         <div className="max-w-7xl mx-auto">
+          <div className="flex flex-row justify-between">
           <h2 className="text-xl font-bold text-zinc-600 mb-4 text-center">
             {recipe.title}
           </h2>
+          <div className="flex justify-center mb-4">
+            <button onClick={toggleFavorite}>
+              {isFavorite ? (
+                <MdFavorite size={24} color="red" />
+              ) : (
+                <MdFavoriteBorder size={24} />
+              )}
+            </button>
+          </div>
+          </div>
           <img
             src={recipe.image}
             alt={recipe.title}
@@ -87,6 +132,7 @@ function RecipePage() {
             className="rounded-lg mb-4 mx-auto max-w-full h-auto "
             
           />
+           
           <div className="flex flex-wrap justify-center items-center gap-4 mb-4 text-zinc-600 font-semibold">
             <div className="flex items-center space-x-1 mb-2">
               <MdTimer size={20} />
