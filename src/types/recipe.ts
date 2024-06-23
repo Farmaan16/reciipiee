@@ -1,5 +1,20 @@
 // types/recipe.ts
+export interface recipecards {
 
+  id: number;
+  title: string;
+  image: string;
+  readyInMinutes: number;
+}
+
+export interface RecipeList {
+  key: number;
+  id: number;
+  title: string;
+  image: string;
+  readyInMinutes: number;
+  
+}
 export interface Recipe {
   vegetarian: boolean;
   vegan: boolean;

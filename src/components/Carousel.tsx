@@ -4,11 +4,11 @@ import { Splide, SplideSlide } from "@splidejs/react-splide";
 import "@splidejs/react-splide/css";
 import { FC } from "react";
 
-import { Recipe } from "../types/recipe";
+import { recipecards } from "../types/recipe";
 import RecipeCard from "./RecipeCard";
 
 interface CarouselProps {
-  recipes: Recipe[];
+  recipes: recipecards[];
 }
 
 const Carousel: FC<CarouselProps> = ({ recipes }) => {

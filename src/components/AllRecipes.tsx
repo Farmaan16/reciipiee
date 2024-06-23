@@ -2,11 +2,11 @@ import { toast } from "react-toastify";
 import { useCallback, useEffect, useState } from "react";
 
 import Spinner from "./Spinner";
-import { Recipe } from "../types/recipe";
+import { RecipeList } from "../types/recipe";
 import AllRecipesCard from "./AllRecipesCard";
 
 function AllRecipes() {
-  const [allRecipes, setAllRecipes] = useState<Recipe[]>([]);
+  const [allRecipes, setAllRecipes] = useState<RecipeList[]>([]);
   const [loading, setLoading] = useState(true);
 
   const getAllRecipes = useCallback(async () => {

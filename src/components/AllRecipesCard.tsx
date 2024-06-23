@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
-import { Recipe } from "../types/recipe";
+import { RecipeList } from "../types/recipe";
 
-function AllRecipesCard({ id, title, image, readyInMinutes }: Recipe) {
+function AllRecipesCard({ id, title, image, readyInMinutes }: RecipeList) {
   return (
     <Link
       to={"/recipe/" + id}
