@@ -7,6 +7,7 @@ import {
   MdAttachMoney,
   MdExpandMore,
   MdExpandLess,
+  MdPercent,
 } from "react-icons/md";
 import Spinner from "../components/Spinner";
 import { RouteParams } from "../types/routeParams";
@@ -24,19 +25,24 @@ function RecipePage() {
       setLoading(true);
 
       try {
-        
-        const res = await fetch(
-          `https://api.spoonacular.com/recipes/${
-            params.id
-          }/information?apiKey=${import.meta.env.VITE_API_KEY}`
-        );
+        const RecipieInfo = localStorage.getItem("RecipieInfo");
+        if (RecipieInfo) {
+          setRecipe(JSON.parse(RecipieInfo));
+        } else {
+          const res = await fetch(
+            `https://api.spoonacular.com/recipes/${
+              params.id
+            }/information?apiKey=${import.meta.env.VITE_API_KEY}`
+          );
 
-        if (!res.ok) {
-          throw new Error("Failed to fetch recipe");
+          if (!res.ok) {
+            throw new Error("Failed to fetch recipe");
+          }
+
+          const data = await res.json();
+          setRecipe(data);
+          localStorage.setItem("RecipieInfo", JSON.stringify(data));
         }
-
-        const data = await res.json();
-        setRecipe(data);
       } catch (error) {
         console.error("Error fetching recipe:", error);
         toast.error("Failed to fetch recipe, try again later!", {
@@ -68,130 +74,121 @@ function RecipePage() {
   }
 
   return (
-    <div className="max-w-7xl mx-auto my-6 px-4">
+    <div className="w-full mx-auto my-6 px-4">
       {recipe && (
-        <div className="w-[1280px] md:w-3/4 mx-auto">
-          <h2 className="text-3xl font-bold mb-4 text-center">
+        <div className="max-w-7xl mx-auto">
+          <h2 className="text-xl font-bold text-zinc-600 mb-4 text-center">
             {recipe.title}
           </h2>
           <img
             src={recipe.image}
             alt={recipe.title}
             loading="lazy"
-            className="rounded-lg mb-4 mx-auto"
-            style={{ maxWidth: "100%", height: "auto" }}
+            className="rounded-lg mb-4 mx-auto max-w-full h-auto "
+            
           />
-          <div className="flex justify-around mb-4">
-            <div className="flex items-center space-x-2">
+          <div className="flex flex-wrap justify-center items-center gap-4 mb-4 text-zinc-600 font-semibold">
+            <div className="flex items-center space-x-1 mb-2">
               <MdTimer size={20} />
-              <span>{recipe.readyInMinutes} min</span>
+              <span className="text-xs sm:text-base">
+                {recipe.readyInMinutes} min
+              </span>
             </div>
-            <div className="flex items-center space-x-2">
+            <div className="flex items-center space-x-1 mb-2">
               <MdRestaurantMenu size={20} />
-              <span>{recipe.servings} servings</span>
+              <span className="text-xs sm:text-base">
+                {recipe.servings} servings
+              </span>
             </div>
-            <div className="flex items-center space-x-2">
+            <div className="flex items-center space-x-1 mb-2">
               <MdAttachMoney size={20} />
-              <span>${recipe.pricePerServing.toFixed(1)} per serving</span>
+              <span className="text-xs sm:text-base">
+                ${recipe.pricePerServing.toFixed(1)} per serving
+              </span>
+            </div>
+            <div className="flex items-center space-x-1 mb-2">
+              <MdPercent size={20} />
+              <span className="text-xs sm:text-base">
+                {recipe.spoonacularScore.toFixed(1)} Rating
+              </span>
             </div>
           </div>
 
-          <div className="max-w-7xl ">
-            <div className="space-y-4">
-              <div className="border rounded-lg p-4 max-w-7xl">
-                <div
-                  className="flex items-center justify-between cursor-pointer"
-                  onClick={() => toggleSection("ingredients")}
-                >
-                  <h3 className="text-xl font-semibold">Ingredients</h3>
-                  {expandedSections.includes("ingredients") ? (
-                    <MdExpandLess size={20} />
-                  ) : (
-                    <MdExpandMore size={20} />
-                  )}
-                </div>
-                {expandedSections.includes("ingredients") && (
-                  <div className="grid grid-cols-2  gap-3 mt-2">
-                    {recipe.extendedIngredients.map((ingredient) => (
-                      <div
-                        key={ingredient.id}
-                        className="flex items-center space-x-2"
-                      >
-                        <img
-                          src={`https://spoonacular.com/cdn/ingredients_100x100/${ingredient.image}`}
-                          alt={ingredient.name}
-                          className="w-10 h-10 rounded-full"
-                        />
-                        <p>{ingredient.original}</p>
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </div>
-
-              <div className="border rounded-lg p-4 max-w-7xl">
-                <div
-                  className="flex items-center justify-between cursor-pointer"
-                  onClick={() => toggleSection("instructions")}
-                >
-                  <h3 className="text-xl font-semibold">Instructions</h3>
-                  {expandedSections.includes("instructions") ? (
-                    <MdExpandLess size={20} />
-                  ) : (
-                    <MdExpandMore size={20} />
-                  )}
-                </div>
-                {expandedSections.includes("instructions") && (
-                  <div
-                    dangerouslySetInnerHTML={{ __html: recipe.instructions }}
-                    className="text-gray-700 mt-2 "
-                  />
-                )}
-              </div>
-
-              <div className="border rounded-lg p-4 max-w-7xl">
-                <div
-                  className="flex items-center justify-between cursor-pointer"
-                  onClick={() => toggleSection("summary")}
-                >
-                  <h3 className="text-xl font-semibold">Quick Summary</h3>
-                  {expandedSections.includes("summary") ? (
-                    <MdExpandLess size={20} />
-                  ) : (
-                    <MdExpandMore size={20} />
-                  )}
-                </div>
-                {expandedSections.includes("summary") && (
-                  <p
-                    dangerouslySetInnerHTML={{ __html: recipe.summary }}
-                    className="text-gray-700 mt-2"
-                  />
-                )}
-              </div>
-
-              <div className="border rounded-lg p-4 w-full">
-                <div
-                  className="flex items-center justify-between cursor-pointer"
-                  onClick={() => toggleSection("nutrition")}
-                >
-                  <h3 className="text-xl font-semibold">Nutrition</h3>
-                  {expandedSections.includes("nutrition") ? (
-                    <MdExpandLess size={20} />
-                  ) : (
-                    <MdExpandMore size={20} />
-                  )}
-                </div>
-                {expandedSections.includes("nutrition") && (
-                  <div className="grid grid-cols-2 gap-4 mt-2">
-                    <p>Calories: {recipe.calories}g</p>
-                    <p>Protein: {recipe.protein}g</p>
-                    <p>Fat: {recipe.fat}g</p>
-                    <p>Carbs: {recipe.carbs}g</p>
-                  </div>
-                )}
-              </div>
+          <div className="max-w-7xl mx-auto">
+  <div className="space-y-6 text-zinc-600">
+    <div className="border rounded-lg p-4">
+      <div
+        className="flex items-center justify-between cursor-pointer"
+        onClick={() => toggleSection("ingredients")}
+      >
+        <h3 className="text-lg font-semibold">Ingredients</h3>
+        {expandedSections.includes("ingredients") ? (
+          <MdExpandLess size={20} />
+        ) : (
+          <MdExpandMore size={20} />
+        )}
+      </div>
+      {expandedSections.includes("ingredients") && (
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mt-2">
+          {recipe.extendedIngredients.map((ingredient) => (
+            <div
+              key={ingredient.id}
+              className="flex items-center space-x-2"
+            >
+              <img
+                src={`https://spoonacular.com/cdn/ingredients_100x100/${ingredient.image}`}
+                alt={ingredient.name}
+                className="w-10 h-10 rounded-full"
+              />
+              <p>{ingredient.original}</p>
             </div>
-          </div>
+          ))}
+        </div>
+      )}
+    </div>
+
+    <div className="border rounded-lg p-4">
+      <div
+        className="flex items-center justify-between cursor-pointer"
+        onClick={() => toggleSection("instructions")}
+      >
+        <h3 className="text-lg font-semibold">Instructions</h3>
+        {expandedSections.includes("instructions") ? (
+          <MdExpandLess size={20} />
+        ) : (
+          <MdExpandMore size={20} />
+        )}
+      </div>
+      {expandedSections.includes("instructions") && (
+        <div
+          dangerouslySetInnerHTML={{ __html: recipe.instructions }}
+          className="text-gray-700 mt-2"
+        />
+      )}
+    </div>
+
+    <div className="border rounded-lg p-4">
+      <div
+        className="flex items-center justify-between cursor-pointer"
+        onClick={() => toggleSection("summary")}
+      >
+        <h3 className="text-lg font-semibold">Quick Summary</h3>
+        {expandedSections.includes("summary") ? (
+          <MdExpandLess size={20} />
+        ) : (
+          <MdExpandMore size={20} />
+        )}
+      </div>
+      {expandedSections.includes("summary") && (
+        <p
+          dangerouslySetInnerHTML={{ __html: recipe.summary }}
+          className="text-gray-700 mt-2"
+        />
+      )}
+    </div>
+  </div>
+</div>
+
         </div>
       )}
     </div>
