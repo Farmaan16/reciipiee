@@ -21,7 +21,7 @@ function AllRecipes() {
         const res = await fetch(
           `https://api.spoonacular.com/recipes/random?apiKey=${
             import.meta.env.VITE_API_KEY
-          }&number=9`
+          }&number=15`
         );
 
         const data = await res.json();
