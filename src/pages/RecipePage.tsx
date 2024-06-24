@@ -30,10 +30,10 @@ function RecipePage() {
       setLoading(true);
 
       try {
-        // const RecipieInfo = localStorage.getItem("RecipieInfo");
-        // if (RecipieInfo) {
-        //   setRecipe(JSON.parse(RecipieInfo));
-        // } else {
+        const RecipieInfo = localStorage.getItem("RecipieInfo");
+        if (RecipieInfo) {
+          setRecipe(JSON.parse(RecipieInfo));
+        } else {
           const res = await fetch(
             `https://api.spoonacular.com/recipes/${
               params.id
@@ -47,7 +47,7 @@ function RecipePage() {
           const data = await res.json();
           setRecipe(data);
           localStorage.setItem("RecipieInfo", JSON.stringify(data));
-      //  } 
+       } 
       } catch (error) {
         console.error("Error fetching recipe:", error);
         toast.error("Failed to fetch recipe, try again later!", {
@@ -110,132 +110,136 @@ function RecipePage() {
 
   return (
     <div className="w-full mx-auto my-6 px-4">
-      
-    {recipe && (
-      <div className="max-w-4xl mx-auto">
-        <div>
-        <Link
+      {recipe && (
+        <div className="max-w-4xl mx-auto">
+          <div>
+            <Link
               to="/"
               className=" text-xl text-zinc-700 mr-7 font-semibold flex items-center hover:underline mb-8"
             >
               <BiArrowBack className="text-lg mr-2" /> Back
             </Link>
-            </div>
-        <div className="flex flex-row justify-between items-center mb-4">
-          <h2 className="text-xl md:text-3xl  font-bold text-zinc-700">{recipe.title}</h2>
-          <button onClick={toggleFavorite}>
-            {isFavorite ? (
-              <MdFavorite size={24} color="red" />
-            ) : (
-              <MdFavoriteBorder size={24} />
-            )}
-          </button>
-        </div>
-        <img
-          src={recipe.image}
-          alt={recipe.title}
-          loading="lazy"
-          className="rounded-lg mb-4 w-full"
-        />
-        <div className="flex flex-wrap justify-center items-center gap-4 mb-4 text-zinc-600 font-semibold">
-          <div className="flex items-center space-x-1 mb-2">
-            <MdTimer size={20} />
-            <span className="text-xs sm:text-base">
-              {recipe.readyInMinutes} min
-            </span>
           </div>
-          <div className="flex items-center space-x-1 mb-2">
-            <MdRestaurantMenu size={20} />
-            <span className="text-xs sm:text-base">
-              {recipe.servings} servings
-            </span>
-          </div>
-          <div className="flex items-center space-x-1 mb-2">
-            <MdAttachMoney size={20} />
-            <span className="text-xs sm:text-base">
-              ${recipe.pricePerServing.toFixed(1)} per serving
-            </span>
-          </div>
-          <div className="flex items-center space-x-1 mb-2">
-            <MdPercent size={20} />
-            <span className="text-xs sm:text-base">
-              {recipe.spoonacularScore.toFixed(1)} Rating
-            </span>
-          </div>
-        </div>
-
-        <div className="space-y-6 text-zinc-600">
-          <div className="border rounded-lg p-4">
-            <div
-              className="flex items-center justify-between cursor-pointer"
-              onClick={() => toggleSection("ingredients")}
-            >
-              <h3 className="text-lg font-semibold">Ingredients</h3>
-              {expandedSections.includes("ingredients") ? (
-                <MdExpandLess size={20} />
+          <div className="flex flex-row justify-between items-center mb-4">
+            <h2 className="text-xl md:text-3xl  font-bold text-zinc-700">
+              {recipe.title}
+            </h2>
+            <button onClick={toggleFavorite}>
+              {isFavorite ? (
+                <MdFavorite size={24} color="red" />
               ) : (
-                <MdExpandMore size={20} />
+                <MdFavoriteBorder size={24} />
               )}
+            </button>
+          </div>
+          <img
+            src={recipe.image}
+            alt={recipe.title}
+            loading="lazy"
+            className="rounded-lg mb-4 w-full"
+          />
+          <div className="flex flex-wrap justify-center items-center gap-4 mb-4 text-zinc-600 font-semibold">
+            <div className="flex items-center space-x-1 mb-2">
+              <MdTimer size={20} />
+              <span className="text-xs sm:text-base">
+                {recipe.readyInMinutes} min
+              </span>
             </div>
-            {expandedSections.includes("ingredients") && (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mt-2">
-                {recipe.extendedIngredients.map((ingredient) => (
-                  <div key={ingredient.id} className="flex items-center space-x-2">
-                    <img
-                      src={`https://spoonacular.com/cdn/ingredients_100x100/${ingredient.image}`}
-                      alt={ingredient.name}
-                      className="w-10 h-10 rounded-full"
-                    />
-                    <p>{ingredient.original}</p>
-                  </div>
-                ))}
-              </div>
-            )}
+            <div className="flex items-center space-x-1 mb-2">
+              <MdRestaurantMenu size={20} />
+              <span className="text-xs sm:text-base">
+                {recipe.servings} servings
+              </span>
+            </div>
+            <div className="flex items-center space-x-1 mb-2">
+              <MdAttachMoney size={20} />
+              <span className="text-xs sm:text-base">
+                ${recipe.pricePerServing.toFixed(1)} per serving
+              </span>
+            </div>
+            <div className="flex items-center space-x-1 mb-2">
+              <MdPercent size={20} />
+              <span className="text-xs sm:text-base">
+                {recipe.spoonacularScore.toFixed(1)} Rating
+              </span>
+            </div>
           </div>
 
-          <div className="border rounded-lg p-4">
-            <div
-              className="flex items-center justify-between cursor-pointer"
-              onClick={() => toggleSection("instructions")}
-            >
-              <h3 className="text-lg font-semibold">Instructions</h3>
-              {expandedSections.includes("instructions") ? (
-                <MdExpandLess size={20} />
-              ) : (
-                <MdExpandMore size={20} />
-              )}
-            </div>
-            {expandedSections.includes("instructions") && (
+          <div className="space-y-6 text-zinc-600 mb-10">
+            <div className="border rounded-lg p-4">
               <div
-                dangerouslySetInnerHTML={{ __html: recipe.instructions }}
-                className="text-gray-700 mt-2"
-              />
-            )}
-          </div>
-
-          <div className="border rounded-lg p-4">
-            <div
-              className="flex items-center justify-between cursor-pointer"
-              onClick={() => toggleSection("summary")}
-            >
-              <h3 className="text-lg font-semibold">Quick Summary</h3>
-              {expandedSections.includes("summary") ? (
-                <MdExpandLess size={20} />
-              ) : (
-                <MdExpandMore size={20} />
+                className="flex items-center justify-between cursor-pointer"
+                onClick={() => toggleSection("ingredients")}
+              >
+                <h3 className="text-lg font-semibold">Ingredients</h3>
+                {expandedSections.includes("ingredients") ? (
+                  <MdExpandLess size={20} />
+                ) : (
+                  <MdExpandMore size={20} />
+                )}
+              </div>
+              {expandedSections.includes("ingredients") && (
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mt-2">
+                  {recipe.extendedIngredients.map((ingredient) => (
+                    <div
+                      key={ingredient.id}
+                      className="flex items-center space-x-2"
+                    >
+                      <img
+                        src={`https://spoonacular.com/cdn/ingredients_100x100/${ingredient.image}`}
+                        alt={ingredient.name}
+                        className="w-10 h-10 rounded-full"
+                      />
+                      <p>{ingredient.original}</p>
+                    </div>
+                  ))}
+                </div>
               )}
             </div>
-            {expandedSections.includes("summary") && (
-              <p
-                dangerouslySetInnerHTML={{ __html: recipe.summary }}
-                className="text-gray-700 mt-2"
-              />
-            )}
+
+            <div className="border rounded-lg p-4">
+              <div
+                className="flex items-center justify-between cursor-pointer"
+                onClick={() => toggleSection("instructions")}
+              >
+                <h3 className="text-lg font-semibold">Instructions</h3>
+                {expandedSections.includes("instructions") ? (
+                  <MdExpandLess size={20} />
+                ) : (
+                  <MdExpandMore size={20} />
+                )}
+              </div>
+              {expandedSections.includes("instructions") && (
+                <div
+                  dangerouslySetInnerHTML={{ __html: recipe.instructions }}
+                  className="text-gray-700 mt-2"
+                />
+              )}
+            </div>
+
+            <div className="border rounded-lg p-4 ">
+              <div
+                className="flex items-center justify-between cursor-pointer "
+                onClick={() => toggleSection("summary")}
+              >
+                <h3 className="text-lg font-semibold">Quick Summary</h3>
+                {expandedSections.includes("summary") ? (
+                  <MdExpandLess size={20} />
+                ) : (
+                  <MdExpandMore size={20} />
+                )}
+              </div>
+              {expandedSections.includes("summary") && (
+                <p
+                  dangerouslySetInnerHTML={{ __html: recipe.summary }}
+                  className="text-gray-700 mt-2"
+                />
+              )}
+            </div>
           </div>
         </div>
-      </div>
-    )}
-  </div >
+      )}
+    </div>
   );
 }
 
