@@ -30,10 +30,10 @@ function RecipePage() {
       setLoading(true);
 
       try {
-        const RecipieInfo = localStorage.getItem("RecipieInfo");
-        if (RecipieInfo) {
-          setRecipe(JSON.parse(RecipieInfo));
-        } else {
+        // const RecipieInfo = localStorage.getItem("RecipieInfo");
+        // if (RecipieInfo) {
+        //   setRecipe(JSON.parse(RecipieInfo));
+        // } else {
           const res = await fetch(
             `https://api.spoonacular.com/recipes/${
               params.id
@@ -47,7 +47,7 @@ function RecipePage() {
           const data = await res.json();
           setRecipe(data);
           localStorage.setItem("RecipieInfo", JSON.stringify(data));
-       } 
+      //  } 
       } catch (error) {
         console.error("Error fetching recipe:", error);
         toast.error("Failed to fetch recipe, try again later!", {
