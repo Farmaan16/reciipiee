@@ -24,7 +24,7 @@ function Navbar() {
     <nav className="py-2 px-4 h-16 bg-white mb-16 mt-6">
       <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between">
         <Link to={"/"} className="flex items-center">
-          <GiKnifeFork size={25} />
+          <GiKnifeFork size={30} />
           <h1 className="logo ml-2">Reciipiee</h1>
         </Link>
         <form
@@ -55,7 +55,7 @@ function Navbar() {
           to="/favorites"
           className=" text-black text-xl  items-center gap-2 hover:text-red-500 font-semibold hidden md:flex "
         >
-          <BsHeart className="text-xl font-bold" /> Favorites
+          <BsHeart className="text-xl font-bold" size={20} /> Favorites
         </Link>
       </div>
     </nav>
