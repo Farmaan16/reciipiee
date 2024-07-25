@@ -46,15 +46,15 @@ function AllRecipes() {
 
   return (
     <div className="my-6 mx-2">
-      <h2 className="text-xl font-semibold">All Recipes</h2>
-      <small className="text-xs text-gray-700 font-semibold">
+      <h2 className="text-xl font-semibold mb-6">All Recipes</h2>
+      {/* <small className="text-xs text-gray-700 font-semibold">
         Swipe to see more
-      </small>
+      </small> */}
 
       {loading ? (
         <Spinner />
       ) : (
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 my-16" >
           {allRecipes.map((recipe) => (
             <AllRecipesCard
               key={recipe.id}

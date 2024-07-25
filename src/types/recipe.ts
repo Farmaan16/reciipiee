@@ -1,10 +1,10 @@
 // types/recipe.ts
 export interface recipecards {
-
   id: number;
   title: string;
   image: string;
   readyInMinutes: number;
+  maxTitleLength: number;
 }
 
 export interface RecipeList {
@@ -56,6 +56,7 @@ export interface Recipe {
   protein: number;
   fat: number;
   carbs: number;
+  maxTitleLength: number;
 }
 
 interface ExtendedIngredient {

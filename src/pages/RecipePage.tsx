@@ -23,7 +23,6 @@ function RecipePage() {
   const [loading, setLoading] = useState(true);
   const [expandedSections, setExpandedSections] = useState<string[]>([]);
   const [isFavorite, setIsFavorite] = useState(false);
-  
 
   useEffect(() => {
     const getRecipeInfo = async () => {
@@ -34,20 +33,20 @@ function RecipePage() {
         // if (RecipieInfo) {
         //   setRecipe(JSON.parse(RecipieInfo));
         // } else {
-          const res = await fetch(
-            `https://api.spoonacular.com/recipes/${
-              params.id
-            }/information?apiKey=${import.meta.env.VITE_API_KEY}`
-          );
+        const res = await fetch(
+          `https://api.spoonacular.com/recipes/${
+            params.id
+          }/information?apiKey=${import.meta.env.VITE_API_KEY}`
+        );
 
-          if (!res.ok) {
-            throw new Error("Failed to fetch recipe");
-          }
+        if (!res.ok) {
+          throw new Error("Failed to fetch recipe");
+        }
 
-          const data = await res.json();
-          setRecipe(data);
-          localStorage.setItem("RecipieInfo", JSON.stringify(data));
-      //  } 
+        const data = await res.json();
+        setRecipe(data);
+        localStorage.setItem("RecipieInfo", JSON.stringify(data));
+        //  }
       } catch (error) {
         console.error("Error fetching recipe:", error);
         toast.error("Failed to fetch recipe, try again later!", {
@@ -78,7 +77,9 @@ function RecipePage() {
       let updatedFavorites;
 
       if (isFavorite) {
-        updatedFavorites = favorites.filter((fav: Recipe) => fav.id !== recipe.id);
+        updatedFavorites = favorites.filter(
+          (fav: Recipe) => fav.id !== recipe.id
+        );
         setIsFavorite(false);
       } else {
         updatedFavorites = [...favorites, recipe];
@@ -86,12 +87,15 @@ function RecipePage() {
       }
 
       localStorage.setItem("favorites", JSON.stringify(updatedFavorites));
-      toast.success(isFavorite ? "Removed from favorites" : "Added to favorites", {
-        position: "top-right",
-        autoClose: 3000,
-        closeOnClick: true,
-        hideProgressBar: true,
-      });
+      toast.success(
+        isFavorite ? "Removed from favorites" : "Added to favorites",
+        {
+          position: "top-right",
+          autoClose: 3000,
+          closeOnClick: true,
+          hideProgressBar: true,
+        }
+      );
     }
   };
   const toggleSection = (sectionName: string) => {
@@ -103,6 +107,22 @@ function RecipePage() {
       setExpandedSections([...expandedSections, sectionName]);
     }
   };
+
+  // Function to split the instructions within <li> tags
+const splitInstructions = (htmlString: string): string[] => {
+  // Extract the content inside <li> tags
+  const liContentMatch = htmlString.match(/<li>(.*?)<\/li>/);
+  if (liContentMatch && liContentMatch[1]) {
+    const liContent = liContentMatch[1];
+    // Split the content into individual instructions
+    const instructionsArray = liContent
+      .split(".")
+      .map((instr: string) => instr.trim())
+      .filter((instr: string) => instr);
+    return instructionsArray;
+  }
+  return [];
+};
 
   if (loading) {
     return <Spinner />;
@@ -212,10 +232,50 @@ function RecipePage() {
                 )}
               </div>
               {expandedSections.includes("instructions") && (
-                <div
-                  dangerouslySetInnerHTML={{ __html: recipe.instructions }}
-                  className="text-gray-700 text-sm md:text-base font-semibold mt-2"
-                />
+                <div className="mt-2">
+                  {recipe.instructions.includes("<li>") ? (
+                    // If instructions are already in HTML list format
+                    <ol className="list-decimal pl-4">
+                      {splitInstructions(recipe.instructions).map(
+                        (instruction, index) => (
+                          <li
+                            key={index}
+                            className="text-gray-700 text-sm md:text-base font-semibold"
+                          >
+                            {instruction}
+                          </li>
+                        )
+                      )}
+                    </ol>
+                  ) : (
+                    // Otherwise, render instructions split by newline
+                    <ol className="list-decimal pl-4">
+                      {recipe.instructions
+                        .split("\n")
+                        .map((instruction, index) => {
+                          // Remove leading numbers or symbols with regex
+                          const cleanedInstruction = instruction.replace(
+                            /^\s*\d+\)\s*|\d+\.\s*/,
+                            ""
+                          );
+
+                          // Only render non-empty instructions
+                          if (cleanedInstruction.trim() !== "") {
+                            return (
+                              <li
+                                key={index}
+                                className="text-gray-700 text-sm md:text-base font-semibold"
+                              >
+                                {cleanedInstruction}
+                              </li>
+                            );
+                          }
+
+                          return null;
+                        })}
+                    </ol>
+                  )}
+                </div>
               )}
             </div>
 

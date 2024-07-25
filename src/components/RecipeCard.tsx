@@ -1,7 +1,18 @@
 import { Link } from "react-router-dom";
 import { recipecards } from "../types/recipe";
 
-function RecipeCard({ id, title, image, readyInMinutes }: recipecards) {
+function RecipeCard({
+  id,
+  title,
+  image,
+  readyInMinutes,
+  maxTitleLength = 20,
+}: recipecards) {
+
+  const truncatedTitle =
+    title.length > maxTitleLength
+      ? `${title.substring(0, maxTitleLength)}...`
+      : title;
   return (
     <Link
       to={"/recipe/" + id}
@@ -19,7 +30,7 @@ function RecipeCard({ id, title, image, readyInMinutes }: recipecards) {
         <div className="absolute inset-0 bg-black bg-opacity-40 ">
           <div className="absolute bottom-0 left-0 right-0 text-left p-4">
             <p className="text-[9px] text-white md:text-base lg:text-lg font-semibold">
-              {title}
+              {truncatedTitle}
             </p>
             <p className="text-[8px] md:text-sm font-semibold text-white">
               Ready in {readyInMinutes} min

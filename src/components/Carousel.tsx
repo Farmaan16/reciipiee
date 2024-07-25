@@ -24,7 +24,7 @@ const Carousel: FC<CarouselProps> = ({ recipes }) => {
         drag: "true",
         gap: "2rem",
         pagination: false,
-        arrows: false,
+        arrows: true,
         lazyLoad: true,
         pauseOnHover: false,
         resetProgess: false,
@@ -47,6 +47,7 @@ const Carousel: FC<CarouselProps> = ({ recipes }) => {
               title={recipe.title}
               image={recipe.image}
               readyInMinutes={recipe.readyInMinutes}
+              maxTitleLength={30}
             />
           </SplideSlide>
         );
